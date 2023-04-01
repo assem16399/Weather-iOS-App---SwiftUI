@@ -104,7 +104,7 @@ struct WeatherDayView: View {
                 Image(systemName: systemName)
                     .symbolRenderingMode(.hierarchical)
                     .resizable()
-                    .foregroundColor(.blue)
+                    .foregroundColor(.yellow)
                     .aspectRatio(
                         contentMode: .fit)
                     .frame(width: 40,
@@ -148,13 +148,21 @@ struct BackgroundView:View {
     let isNight:Bool
     
     var body: some View{
-        LinearGradient(gradient: Gradient(
-            colors: isNight
-            ? [.black,.gray]
-            : [.blue, Color("lightBlue")]),
-                       startPoint: .topLeading,
-                       endPoint: .bottomTrailing)
-        .ignoresSafeArea(.all)
+        
+        if #available(iOS 16.0, *) {
+            ContainerRelativeShape()
+                .fill(
+                    isNight ? Color.black.gradient : Color.blue.gradient).ignoresSafeArea()
+        } else {
+            // Fallback on earlier versions
+            LinearGradient(gradient: Gradient(
+                colors: isNight
+                ? [.black,.gray]
+                : [.blue, Color("lightBlue")]),
+                           startPoint: .topLeading,
+                           endPoint: .bottomTrailing)
+            .ignoresSafeArea(.all)
+        }
     }
 }
 
